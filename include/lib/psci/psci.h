@@ -39,6 +39,7 @@
 /*******************************************************************************
  * Defines for runtime services function ids
  ******************************************************************************/
+// 16
 #define PSCI_VERSION			U(0x84000000)
 #define PSCI_CPU_SUSPEND_AARCH32	U(0x84000001)
 #define PSCI_CPU_SUSPEND_AARCH64	U(0xc4000001)
@@ -59,20 +60,25 @@
 #define PSCI_NODE_HW_STATE_AARCH64	U(0xc400000d)
 #define PSCI_SYSTEM_SUSPEND_AARCH32	U(0x8400000E)
 #define PSCI_SYSTEM_SUSPEND_AARCH64	U(0xc400000E)
+// STAT 4
 #define PSCI_STAT_RESIDENCY_AARCH32	U(0x84000010)
 #define PSCI_STAT_RESIDENCY_AARCH64	U(0xc4000010)
 #define PSCI_STAT_COUNT_AARCH32		U(0x84000011)
 #define PSCI_STAT_COUNT_AARCH64		U(0xc4000011)
+// 3
 #define PSCI_SYSTEM_RESET2_AARCH32	U(0x84000012)
 #define PSCI_SYSTEM_RESET2_AARCH64	U(0xc4000012)
 #define PSCI_MEM_PROTECT		U(0x84000013)
 #define PSCI_MEM_CHK_RANGE_AARCH32	U(0x84000014)
 #define PSCI_MEM_CHK_RANGE_AARCH64	U(0xc4000014)
 
+#define PSCI_SWITCH_TO_SANCTUARY	U(0x84000015)
+#define PSCI_SWITCH_TO_NORMAL_OS	U(0x84000016)
 /*
  * Number of PSCI calls (above) implemented
  */
 #if ENABLE_PSCI_STAT
+// #define PSCI_NUM_CALLS			U(22)
 #define PSCI_NUM_CALLS			U(22)
 #else
 #define PSCI_NUM_CALLS			U(18)

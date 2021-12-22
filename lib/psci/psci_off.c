@@ -46,7 +46,7 @@ int psci_do_cpu_off(unsigned int end_pwrlvl)
 	unsigned int idx = plat_my_core_pos();
 	psci_power_state_t state_info;
 	unsigned int parent_nodes[PLAT_MAX_PWR_LVL] = {0};
-
+	printf("[db] %s\n", __func__);
 	/*
 	 * This function must only be called on platforms where the
 	 * CPU_OFF platform hooks have been implemented.

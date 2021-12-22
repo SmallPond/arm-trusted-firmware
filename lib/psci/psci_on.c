@@ -63,7 +63,6 @@ int psci_cpu_on_start(u_register_t target_cpu,
 	aff_info_state_t target_aff_state;
 	int ret = plat_core_pos_by_mpidr(target_cpu);
 	unsigned int target_idx = (unsigned int)ret;
-
 	/* Calling function must supply valid input arguments */
 	assert(ret >= 0);
 	assert(ep != NULL);
@@ -98,6 +97,7 @@ int psci_cpu_on_start(u_register_t target_cpu,
 	flush_cpu_data_by_index(target_idx,
 				psci_svc_cpu_data.aff_info_state);
 	rc = cpu_on_validate_state(psci_get_aff_info_state_by_idx(target_idx));
+	printf("[db] %s: validate state: %d\n", __func__, rc);
 	if (rc != PSCI_E_SUCCESS)
 		goto exit;
 
@@ -158,6 +158,7 @@ int psci_cpu_on_start(u_register_t target_cpu,
 
 exit:
 	psci_spin_unlock_cpu(target_idx);
+	printf("[db] %s: ret with: %d\n", __func__, rc);
 	return rc;
 }
 

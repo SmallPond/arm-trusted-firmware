@@ -33,12 +33,12 @@ int psci_cpu_on(u_register_t target_cpu,
 	rc = psci_validate_mpidr(target_cpu);
 	if (rc != PSCI_E_SUCCESS)
 		return PSCI_E_INVALID_PARAMS;
-
+	printf("[db] %s: mpidr is valid\n", __func__);
 	/* Validate the entry point and get the entry_point_info */
 	rc = psci_validate_entry_point(&ep, entrypoint, context_id);
 	if (rc != PSCI_E_SUCCESS)
 		return rc;
-
+	printf("[db] %s: entry is valid\n", __func__);
 	/*
 	 * To turn this cpu on, specify which power
 	 * levels need to be turned on
@@ -216,6 +216,26 @@ int psci_cpu_off(void)
 	return rc;
 }
 
+int  psci_switch_to_normal_os(u_register_t info)
+{
+	// int rc;
+	printf("[ATF] :%s \n", __func__);
+	// unsigned int target_pwrlvl = PLAT_MAX_PWR_LVL;
+
+	// // save 
+	// // rc = psci_do_cpu_off(target_pwrlvl);
+
+	// /*
+	//  * The only error cpu_off can return is E_DENIED. So check if that's
+	//  * indeed the case.
+	//  */
+	// assert(rc == PSCI_E_DENIED);
+
+	return -1;
+}
+
+
+
 int psci_affinity_info(u_register_t target_affinity,
 		       unsigned int lowest_affinity_level)
 {
@@ -390,14 +410,14 @@ u_register_t psci_smc_handler(uint32_t smc_fid,
 	/* Check the fid against the capabilities */
 	if ((psci_caps & define_psci_cap(smc_fid)) == 0U)
 		return (u_register_t)SMC_UNK;
-
+	// smc_fid 的最高位指定 SMC_32 和  SMC_64
 	if (((smc_fid >> FUNCID_CC_SHIFT) & FUNCID_CC_MASK) == SMC_32) {
 		/* 32-bit PSCI function, clear top parameter bits */
 
 		uint32_t r1 = (uint32_t)x1;
 		uint32_t r2 = (uint32_t)x2;
 		uint32_t r3 = (uint32_t)x3;
-
+		printf("[db] %s: 32bit PSCI\n", __func__);
 		switch (smc_fid) {
 		case PSCI_VERSION:
 			ret = (u_register_t)psci_version();
@@ -474,7 +494,8 @@ u_register_t psci_smc_handler(uint32_t smc_fid,
 			/* We should never return from psci_system_reset2() */
 			ret = psci_system_reset2(r1, r2);
 			break;
-
+		case PSCI_SWITCH_TO_NORMAL_OS:
+			ret = psci_switch_to_normal_os(x1);
 		default:
 			WARN("Unimplemented PSCI Call: 0x%x\n", smc_fid);
 			ret = (u_register_t)SMC_UNK;
